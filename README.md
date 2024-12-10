@@ -9,7 +9,7 @@ Link to Paper:
 
 # 1. Introduction
 
-> *“The significance of this paper”*
+> *Contributions*
 > 
 
 ---
@@ -28,28 +28,26 @@ Link to Paper:
 
 ![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled.png)
 
-**Gradients Vanishing / Explosion is not the problem anymore**
+- **Gradients Vanishing / Explosion is not the problem anymore:**
 
----
 
-> *“Vanishing/Exploding gradients problem has been largely addressed by normalized initialization and intermediate normalization layers, which enable networks with tens of layers to start converging for stochastic gradient descent (SGD) with backpropagation”*
-> 
+>> *“Vanishing/Exploding gradients problem has been largely addressed by normalized initialization and intermediate normalization layers, which enable networks with tens of layers to start converging for stochastic gradient descent (SGD) with backpropagation”*
 
----
 
-> *“We argue that this optimization difficulty is unlikely to be caused by vanishing gradients. These plain networks are trained with BN, which ensures forward propagated signals to have non-zero variances. We also verify that the backward propagated gradients exhibit healthy norms with BN. So neither forward nor backward signals vanish.”*
-> 
 
-**It is not even the problem of *overfitting***
+>> *“We argue that this optimization difficulty is unlikely to be caused by vanishing gradients. These plain networks are trained with BN, which ensures forward propagated signals to have non-zero variances. We also verify that the backward propagated gradients exhibit healthy norms with BN. So neither forward nor backward signals vanish.”*
+>
 
----
+- **It is not even the problem of *overfitting*:**
 
-“With the network depth increasing, accuracy gets saturated and then degrades rapidly.”
+
+>>“With the network depth increasing, accuracy gets saturated and then degrades rapidly.”
 
 If it was *overfitting,* training error should not increase (as overfitting is the over training on the train dataset, training accuracy should increase)
 
+<br><br><br>
 
-**Degradation Problem**
+>**Degradation Problem**
 
 ---
 
@@ -59,7 +57,7 @@ When training very deep neural networks, it has been observed that adding more l
 
 So it brings up a new type of problem to deal with, ***degradation problem.***
 
-> **Conceptual Construction vs. Reality**
+**Conceptual Construction vs. Reality**
 > 
 - **Theoretical Observation:**
     - Suppose we have a shallower neural network that we can train effectively.
@@ -76,9 +74,9 @@ Theoretically, deeper network has the potential to perform at least as well as t
 
 Residual Learning is introduced to address this practical challenge.
 
-**Hypothesis**
+<br>
 
----
+**Hypothesis**
 
 Let the stacked nonlinear layers fit another mapping of $F(x) := H(x)−x$. The original mapping is recast into $F(x)+x$.
 
@@ -115,10 +113,10 @@ The network needs to learn the exact identity mapping from scratch, which involv
 <br><br><br>
 
 # 2. Architecture
+<br><br>
 
-**Residual Block**
+## **Residual Block**
 
----
 
 ![**(Residual Block | Shortcut Connections | Skip-Connection)**](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%202.png)
 
@@ -147,21 +145,20 @@ The network needs to learn the exact identity mapping from scratch, which involv
 
 - While preventing the degrading problem, it still achieves and take advantages of better accuracy of having deeper and deeper layers.
 
-> **Projection Shortcut**
+<br><br>
+
+## **Projection Shortcut**
 > 
 
----
 
 Refers to the use of a linear transformation (typically via a $1 \times 1$ convolutional layer) to match the dimensions of the input and the output feature maps within a residual block. This allows the input to be added to the output of the residual block even when their dimensions differ, such as when the number of channels changes or when downsampling is performed.
 
-<aside>
-<img src="https://www.notion.so/icons/arrow-right_orange.svg" alt="https://www.notion.so/icons/arrow-right_orange.svg" width="40px" /> The projection is applied to the input $\mathbf{x}$ when the dimensions of $\mathbf{x}$ and  $\mathcal{F(\mathbf{x})}$ are not the same. This ensures that the addition in the residual block, where  $\mathcal{H}(\mathbf{x}) = \mathcal{F}(\mathbf{x}) + \mathbf{x}$ , is valid.
+The projection is applied to the input $`\mathbf{x}`$ when the dimensions of $`\mathbf{x}`$ and  $\mathcal{F(\mathbf{x})}$ are not the same. This ensures that the addition in the residual block, where  $\mathcal{H}(\mathbf{x}) = \mathcal{F}(\mathbf{x}) + \mathbf{x}$ , is valid.
 
-</aside>
 
 ![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%204.png)
 
-The dimensions of $\mathbf{x}$ and $\mathcal{F}$ must be equal. If this is not the case (*e.g*., when changing the input/output channels), we can perform a linear projection $W_s$ by the shortcut connections to match the dimensions:
+The dimensions of $`\mathbf{x}`$ and $`\mathcal{F}`$ must be equal. If this is not the case (*e.g*., when changing the input/output channels), we can perform a linear projection $`W_s`$ by the shortcut connections to match the dimensions:
 
 $$
 \mathbf{y} = \mathcal{F}(\mathbf{x}, \{W_i\}) + W_s \mathbf{x}
@@ -193,14 +190,10 @@ We can also use a square matrix $W_s$. But, by experiments, identity mapping is 
 
 **Small differences among A/B/C** indicate that projection shortcuts are NOT essential for addressing the degradation problem. So 50, 101, 152-layer models do not use C to reduce memory/time complexity and model sizes. Identity shortcuts are particularly important for not increasing the complexity of the bottleneck architectures that are introduced below.
 
-</aside>
+<br><br>
 
-</aside>
+## **Bottleneck**
 
-<aside>
-<img src="https://www.notion.so/icons/wall_orange.svg" alt="https://www.notion.so/icons/wall_orange.svg" width="40px" /> **Bottleneck**
-
----
 
 ![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%207.png)
 
@@ -219,15 +212,18 @@ If projection shortcut is used instead of identity shortcut, time complexity/mod
 
 FLOPS is a unit of speed. FLOPs is a unit of amount.
 
-**Residual Block As an Appropriate Preconditioning**
 
----
+<br><br>
+
+## **Residual Block As an Appropriate Preconditioning**
+
+
 
 ![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%2010.png)
 
 ### 1. Optimal Function
 
-- **$H(x)$** is the ultimate output of the network block, which is the sum of the input $x$ and the residual function $F(x)$:
+- **$H(x)$** is the ultimate output of the network block, which is the sum of the input $`x`$ and the residual function $`F(x)`$:
 $H(x)=F(x)+x$
 - **Optimal Function** refers to the best possible function that the network is trying to learn to minimize the training error. This optimal function is $H(x)$, which is the final output after considering both the residual $F(x)$ and the identity mapping $x$.
 
@@ -246,7 +242,7 @@ $$
 - **Easier to Find Perturbations:** In the residual network, the task for the solver (optimizer) is to learn the small differences $F(x)$ rather than learning $H(x)$ directly. This means the network can start with an identity mapping and only needs to adjust the small deviations (perturbations) to reach the optimal function:
 
 $$
-\text{Learn } F(x)≈0 \\\text{ (small adjustments) instead of learning } H(x) \text{ from scratch}
+\text{Learn } F(x)≈0 \text{ (small adjustments) instead of learning } H(x) \text{ from scratch}
 $$
 
 - **Learn the Function as a New One:** In traditional networks (without residuals), the network would need to learn $H(x)$ directly from scratch. This is harder because it involves more complex transformations through multiple layers.
@@ -258,12 +254,12 @@ $$
 Explanation:
 
 - **Identity Mappings as Preconditioning:** Since $F(x)$ is small, the network's output $H(x)=F(x)+x$ is close to the input $x$. This indicates that starting with an identity mapping $x$ and learning small adjustments $F(x)$ is a good initial guess (preconditioning). It sets the network closer to the optimal solution from the beginning, making it easier to learn the final function.
-- **Small Responses of $F(x)$:** In experiments, it has been observed that the actual values of $F(x)$ learned by the network are generally small. This means that the changes or corrections $F(x)$ makes to the input xxx are minor.
-    
-    $$
-    F(x) \approx 0 \text{ for most inputs}
-    $$
-    
+- **Small Responses of $F(x)$:** In experiments, it has been observed that the actual values of $F(x)$ learned by the network are generally small. This means that the changes or corrections $`F(x)`$ makes to the input $`x`$ are minor.
+
+$$F(x) \approx 0 \text{ for most inputs}$$
+
+<br><br>
+
 Local Responses and Residual Blocks
 
 ---
@@ -272,66 +268,7 @@ Local Responses and Residual Blocks
 
 ![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%2012.png)
 
-</aside>
 
-> **Architecture**
-> 
-
----
-
-<aside>
-<img src="https://www.notion.so/icons/hammer_orange.svg" alt="https://www.notion.so/icons/hammer_orange.svg" width="40px" /> Breakdown
-
----
-
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%2013.png)
-
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%2014.png)
-
-> FLOPs Calculation
-> 
-
----
-
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%2015.png)
-
-</aside>
-
-> Result
-> 
-
----
-
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%2016.png)
-
-> Analysis of Extremely Deep Networks on CIFAR-10
-> 
-
----
-
-Analysis of Extremely Deep Networks on CIFAR-10
-
----
-
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%2017.png)
-
-**Intro**
-
----
-
-Make an aggressively deep model(1202 layers) to explore if extremely deep models are better. (On CIFAR-10)
-
-**Result**
-
----
-
-The testing result of this 1202-layer network is worse than that of our 110-layer network, although both have similar training error. Paper argues that this is because of ***overfitting***. The 1202-layer network may be unnecessarily large (19.4M) for the small dataset.
-
-**Future**
-
----
-
-Combining with stronger regularization may improve results, which will be studied in the future.
 
 
 # 3. Experiments
