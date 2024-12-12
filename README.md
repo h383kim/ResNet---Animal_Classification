@@ -26,7 +26,9 @@ Link to Paper:
 
 ---
 
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled.png)
+<p align="center">
+    <img src=https://github.com/h383kim/ResNet/blob/main/images/image1.png>
+</p>
 
 - **Gradients Vanishing / Explosion is not the problem anymore:**
 
@@ -51,7 +53,9 @@ If it was *overfitting,* training error should not increase (as overfitting is t
 
 ---
 
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%201.png)
+<p align="center">
+    <img src=https://github.com/h383kim/ResNet/blob/main/images/image2.png>
+</p>
 
 When training very deep neural networks, it has been observed that adding more layers can sometimes lead to higher training error, not necessarily better performance.
 
@@ -70,7 +74,9 @@ So it brings up a new type of problem to deal with, ***degradation problem.***
 Theoretically, deeper network has the potential to perform at least as well as the shallower network because, in the worst-case scenario, it can behave exactly like the shallower network by using identity mappings and copied weights. In practice, however, optimization methods (like stochastic gradient descent) often fail to find such solutions in deeper networks.
 
 
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/4371fb97-5660-40eb-802b-d926528a7f6e.png)
+<p align="center">
+    <img src=https://github.com/h383kim/ResNet/blob/main/images/image3.png>
+</p>
 
 Residual Learning is introduced to address this practical challenge.
 
@@ -80,7 +86,7 @@ Residual Learning is introduced to address this practical challenge.
 
 Let the stacked nonlinear layers fit another mapping of $F(x) := H(x)−x$. The original mapping is recast into $F(x)+x$.
 
-![**(Residual Block | Shortcut Connections | Skip-Connection)**](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%202.png)
+![**(Residual Block | Shortcut Connections | Skip-Connection)**](https://github.com/h383kim/ResNet/blob/main/images/image4.png)
 
 **(Residual Block | Shortcut Connections | Skip-Connection)**
 
@@ -114,21 +120,19 @@ The network needs to learn the exact identity mapping from scratch, which involv
 
 # 2. Architecture
 <br><br>
+<p align="center">
+    <img src=https://github.com/h383kim/ResNet/blob/main/images/image10.png>
+</p>
 
+<br><br>
 ## **Residual Block**
 
 
-![**(Residual Block | Shortcut Connections | Skip-Connection)**](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%202.png)
+![**(Residual Block | Shortcut Connections | Skip-Connection)**](https://github.com/h383kim/ResNet/blob/main/images/image4.png)
 
 **(Residual Block | Shortcut Connections | Skip-Connection)**
 
 ---
-
-> 
-> 
-> 
-> ![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%203.png)
-> 
 
 **The shortcut connection is done by element-wise addition which is negligible computational cost**
 
@@ -156,7 +160,9 @@ Refers to the use of a linear transformation (typically via a $1 \times 1$ convo
 The projection is applied to the input $`\mathbf{x}`$ when the dimensions of $`\mathbf{x}`$ and  $\mathcal{F(\mathbf{x})}$ are not the same. This ensures that the addition in the residual block, where  $\mathcal{H}(\mathbf{x}) = \mathcal{F}(\mathbf{x}) + \mathbf{x}$ , is valid.
 
 
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%204.png)
+<p align="center">
+    <img src=https://github.com/h383kim/ResNet/blob/main/images/image5.png>
+</p>
 
 The dimensions of $`\mathbf{x}`$ and $`\mathcal{F}`$ must be equal. If this is not the case (*e.g*., when changing the input/output channels), we can perform a linear projection $`W_s`$ by the shortcut connections to match the dimensions:
 
@@ -166,7 +172,6 @@ $$
 
 We can also use a square matrix $W_s$. But, by experiments, identity mapping is sufficient for addressing the degradation problem and is economical, and thus $W_s$ is only used when matching dimensions.
 
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%205.png)
 
 **Options for Shortcuts in Residual Blocks**
 
@@ -186,7 +191,9 @@ We can also use a square matrix $W_s$. But, by experiments, identity mapping is 
 
 (This approach is NOT parameter-free, thus increases complexities and costs).
 
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%206.png)
+<p align="center">
+    <img src=https://github.com/h383kim/ResNet/blob/main/images/image6.png>
+</p>
 
 **Small differences among A/B/C** indicate that projection shortcuts are NOT essential for addressing the degradation problem. So 50, 101, 152-layer models do not use C to reduce memory/time complexity and model sizes. Identity shortcuts are particularly important for not increasing the complexity of the bottleneck architectures that are introduced below.
 
@@ -194,14 +201,13 @@ We can also use a square matrix $W_s$. But, by experiments, identity mapping is 
 
 ## **Bottleneck**
 
-
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%207.png)
-
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%208.png)
+<p align="center">
+    <img src=https://github.com/h383kim/ResNet/blob/main/images/image7.png width="200">
+</p>
 
 For deeper models(50, 101, 152-layers) incorporate **“bottleneck blocks”** to reduce the **complexity** and **training time**. The three layers are $1×1, 3×3,$ and $1×1$ convolutions, where the $1×1$  layers are responsible for reducing and then increasing (restoring) dimensions, leaving the $3×3$ layer a bottleneck with smaller input/output dimensions
 
-![(Left: regular, Right: bottleneck)](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%209.png)
+![(Left: regular, Right: bottleneck)](https://github.com/h383kim/ResNet/blob/main/images/image8.png)
 
 (Left: regular, Right: bottleneck)
 
@@ -218,8 +224,6 @@ FLOPS is a unit of speed. FLOPs is a unit of amount.
 ## **Residual Block As an Appropriate Preconditioning**
 
 
-
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%2010.png)
 
 ### 1. Optimal Function
 
@@ -264,12 +268,12 @@ Local Responses and Residual Blocks
 
 ---
 
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%2011.png)
+<p align="center">
+    <img src=https://github.com/h383kim/ResNet/blob/main/images/image9.png>
+</p>
 
-![Untitled](ResNet%20(2015)%20e40addd56fad49a1bb671e3926d73118/Untitled%2012.png)
 
-
-
+<br><br><br>
 
 # 3. Experiments
 
