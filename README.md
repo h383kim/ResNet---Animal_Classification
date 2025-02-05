@@ -3,7 +3,6 @@
 ***“Deep Residual Learning for Image Recognition” - 2015***
 
 Link to Paper:
-
 [https://arxiv.org/pdf/1409.1556v6](https://arxiv.org/pdf/1512.03385v1)
 
 
